@@ -7,6 +7,8 @@ import com.calenderdetails.CentralizedCalendar;
 import com.driverclass.DriverClass;
 import com.leavecalculation.LeaveBalance;
 import com.leavecalculation.RequestLeave;
+import com.leavecalender.Email;
+import com.leavecalender.Notification;
 /**
  * The  Employee class represents an employee profile, extending the {@code Person} class.
  * It provides methods for performing various operations related to employee leave and leave requests.
@@ -74,9 +76,9 @@ public class Employee extends Person {
                         lc.cancelLeaveRequest();
                         break;
                     case 5:
-                        System.out.println("Enter your ID :");
-                        int emp_id=sc.nextInt();
-                        lc.viewStatus(emp_id);
+                    	int id=RequestLeave.fetchEmployeeId(username);
+                        lc.viewStatus(id);
+                        
                         break;
                     case 6:
                         CentralizedCalendar centralizedCalendar = new CentralizedCalendar(0, "Default", "Default description", 0, new Date(2024, 0, 1));

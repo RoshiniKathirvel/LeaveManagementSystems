@@ -21,6 +21,7 @@ import com.jdbcconnection.JdbcConnection;
  * @since 14 FEB 2024
  */
 public class RequestLeave {
+
 	static JdbcConnection jc=new JdbcConnection();
 	
 	static Scanner sc = new Scanner(System.in);
@@ -57,14 +58,15 @@ public class RequestLeave {
      *
      * @throws ClassNotFoundException Thrown when the required class is not found.
      */
+
 private static  void sickLeaveRequest(String username) throws ClassNotFoundException {
 		System.out.println("SICK LEAVE REQUEST");
 		
 		int emp_id=fetchEmployeeId(username);
         sc.nextLine();
 		
-		int sick_Leave_Balance = LeaveBalance.sickLeaveBalance(emp_id);
-		System.out.println("NOW YOU ENTERED INTO LEAVE REQUEST APPLICATION");
+		//int sick_Leave_Balance = LeaveBalance.sickLeaveBalance(emp_id);
+		System.out.println("You have entered to apply the sick leave");
 		System.out.println();
 		
 		String startDateString = validateDateInput("Start Date (YYYY-MM-DD): ");
@@ -78,7 +80,7 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
 
         long calculatedDays = ChronoUnit.DAYS.between(start, end);
         String cal = "SELECT sick_leave_balance FROM DATABASE.leave_balance WHERE emp_id=?";
-        int casualLeave = 0;
+        int sick_leave_balance = 0;
 
         try (Connection conn = JdbcConnection.getDBConnection()) {
             // Prepare the SQL statement
@@ -91,8 +93,8 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
 
             // Retrieve the result from the query
             if (resultSet.next()) {
-                casualLeave = resultSet.getInt("casual_leave");
-                System.out.println("Remaining Leave: " + casualLeave);
+            	sick_leave_balance = resultSet.getInt("sick_leave_balance");
+                System.out.println("Remaining Leave: " + sick_leave_balance);
             } else {
                 System.out.println("Employee not found or error in retrieving leave details.");
             }
@@ -101,10 +103,10 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
         }
 
         // Continue with your logic using casualLeave
-        if (calculatedDays > casualLeave) {
-            System.out.println("Entered with your balance days");
+        if (calculatedDays > sick_leave_balance) {
+            System.out.println("you entered with your balance leave ... you may proceed with your reason..");
         } else {
-            System.out.println("Enter correct days");
+            System.out.println("Enter with your balanced days");
         }
 
         System.out.print("Reason: ");
@@ -143,7 +145,7 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
         
         // Prompt the user to enter details for the leave request
 		System.out.println();
-		System.out.println("NOW WE ENTER INTO LEAVE REQUEST APPLICATION");
+		System.out.println("you entered into a causal leave application..");
 		System.out.println();
 
 		String startDateString = validateDateInput("Start Date (YYYY-MM-DD): ");
@@ -156,9 +158,9 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
         LocalDate end = LocalDate.parse(endDateString);
 
         long calculatedDays = ChronoUnit.DAYS.between(start, end);
-        System.out.println("calculatedDays: " + calculatedDays);
+        System.out.println("applying days for leave is " + calculatedDays);
 
-        String cal = "SELECT causal_leave_balance FROM DATABASE.leave_balance WHERE emp_id=?";
+        String cal = "SELECT CAUSAL_LEAVE_BALANCE FROM DATABASE.leave_balance WHERE emp_id=?";
         int casualLeave = 0;
 
         try (Connection conn = JdbcConnection.getDBConnection()) {
@@ -172,7 +174,7 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
 
             // Retrieve the result from the query
             if (resultSet.next()) {
-                casualLeave = resultSet.getInt("casual_leave");
+                casualLeave = resultSet.getInt("CAUSAL_LEAVE_BALANCE");
                 System.out.println("Remaining Leave: " + casualLeave);
             } else {
                 System.out.println("Employee not found or error in retrieving leave details.");
@@ -219,9 +221,9 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
      * @throws ClassNotFoundException Thrown when the required class is not found.
 	 * @throws LoginException 
      */
-	public static void displayLeaveBalance() throws ClassNotFoundException, LoginException {
-		LeaveBalance.displayLeaveBalance(null, null);
-	}
+//	public static void displayLeaveBalance() throws ClassNotFoundException, LoginException {
+//		LeaveBalance.displayLeaveBalance(userName,password);
+//	}
 	/**
      * Cancels a leave request based on user input.
      *
@@ -229,7 +231,7 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
      */
 	public static void cancelLeaveRequest() throws ClassNotFoundException {
 		System.out.println();
-		System.out.println("CANCELLING LEAVE REQUEST");
+		System.out.println("Cancel your leave request");
 		System.out.println();
 		try (Connection conn = JdbcConnection.getDBConnection()) {
             System.out.print("Enter Leave ID to cancel: ");
@@ -291,7 +293,7 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
 	public static void modifyLeaveRequest(String username) throws ClassNotFoundException, LoginException {
 		
 		System.out.println();
-		System.out.println("MODIFYING LEAVE REQUEST");
+		System.out.println("modify the leave request");
 		RequestLeave.cancelLeaveRequest();
 		RequestLeave.applyLeave(username);
 		
@@ -302,19 +304,19 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
      * @param empId The employee ID to check for leave application status.
      * @throws ClassNotFoundException Thrown when the required class is not found.
      */
-	    public static void viewStatus(int empId) throws ClassNotFoundException {
-	        System.out.println("Showing your status of the application");
+	    public static void viewStatus(int emp_Id) throws ClassNotFoundException {
+	        System.out.println("Your leave request status");
 
 	        try (Connection conn = JdbcConnection.getDBConnection()) {
 	            String sql = "SELECT status FROM DATABASE.leave_details WHERE emp_id = ?";
 	            try (PreparedStatement statement = conn.prepareStatement(sql)) {
-	                statement.setInt(1, empId);
+	                statement.setInt(1, emp_Id);
 	                try (ResultSet resultSet = statement.executeQuery()) {
 	                    if (resultSet.next()) {
 	                        String status = resultSet.getString("status");
 	                        System.out.println("Your leave application status: " + status);
 	                    } else {
-	                        System.out.println("No leave application found for Employee ID " + empId);
+	                        System.out.println("No leave application found for Employee ID " + emp_Id);
 	                    }
 	                }
 	            }
@@ -332,11 +334,7 @@ private static  void sickLeaveRequest(String username) throws ClassNotFoundExcep
 	            String query = "SELECT emp_id FROM DATABASE.employee WHERE username = ?";
 	            PreparedStatement statement = connection.prepareStatement(query);
 	            statement.setString(1, username);
-
-	            
-	            ResultSet resultSet = statement.executeQuery();
-
-	            
+                ResultSet resultSet = statement.executeQuery();
 	            if (resultSet.next()) {
 	                empId = resultSet.getInt("emp_id");
 	            }

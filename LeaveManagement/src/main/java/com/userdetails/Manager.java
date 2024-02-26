@@ -56,15 +56,15 @@ public class Manager extends Person {
                     case 2:
                     	
                        ld.makeDecision();
-                       long leave_id = nf.getLeave_id(); 
-                       long emp_id = nf.getEmp_id(); 
-                       String leave_type =nf.getLeave_type(); 
-                       Date startDate =(Date) nf.getStartDate(); 
-                       Date endDate =(Date) nf.getEndDate(); 
-                       String reason =nf.getReason(); 
-                       String status =nf.getStatus(); 
-                       Email emailNotification = new Email(leave_id, emp_id, leave_type, startDate, endDate, reason, status);
-                       emailNotification.sendNotification(); 
+//                       long leave_id = nf.getLeave_id(); 
+//                       long emp_id = nf.getEmp_id(); 
+//                       String leave_type =nf.getLeave_type(); 
+//                       Date startDate =(Date) nf.getStartDate(); 
+//                       Date endDate =(Date) nf.getEndDate(); 
+//                       String reason =nf.getReason(); 
+//                       String status =nf.getStatus(); 
+//                       Email emailNotification = new Email(leave_id, emp_id, leave_type, startDate, endDate, reason, status);
+//                       emailNotification.sendNotification(); 
                         break;
                     case 3:
                      

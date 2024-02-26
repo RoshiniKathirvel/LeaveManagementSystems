@@ -1,5 +1,5 @@
 package com.leavecalculation;
-
+import com.leavecalculation.*;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
@@ -44,9 +44,8 @@ public class LeaveBalance {
 		System.out.println("|------------------------------------------------------------------|");
 		
 		boolean flag = true;
-		System.out.println("Enter Employee ID : ");
-        int id = sc.nextInt();
-		
+
+		int id=RequestLeave.fetchEmployeeId(userName);
 		while(flag) {
 			System.out.print("ENTER YOUR CHOICE : ");
 			int choice = sc.nextInt();
@@ -57,13 +56,17 @@ public class LeaveBalance {
 				break;
 			case 2:
 				int sick_Leave_Balance = sickLeaveBalance(id);
-				System.out.println("Employee ID: " + id);
-                System.out.println("Sick Leave Balance: " + sick_Leave_Balance);
+				System.out.println("|---------------------------------|");
+				System.out.println("| Employee ID: " + id+"                  |");
+                System.out.println("| Sick Leave Balance: " +sick_Leave_Balance+"           |");
+                System.out.println("|---------------------------------|");
 				break;
 			case 3:
 				int casual_Leave_Balance = casualLeaveBalance(id);
-				System.out.println("Employee ID: " + id);
-                System.out.println("Casual Leave Balance: " + casual_Leave_Balance);
+				System.out.println("|---------------------------------|");
+				System.out.println("| Employee ID: " + id+"                  |");
+                System.out.println("| Casual Leave Balance: " + casual_Leave_Balance+"         |");
+                System.out.println("|---------------------------------|");
 				break;
 			case 4:
 				Account acc= new Account(userName,password);
@@ -95,9 +98,13 @@ public class LeaveBalance {
 	                if (resultSet.next()) {
 	                    int casualLeaveBalance = resultSet.getInt("causal_leave_balance");
 	                    int sickLeaveBalance = resultSet.getInt("sick_leave_balance");
-	                    System.out.println("Employee ID: " + id);
-	                    System.out.println("Casual Leave Balance: " + casualLeaveBalance);
-	                    System.out.println("Sick Leave Balance: " + sickLeaveBalance);
+	                    System.out.println();	                   
+	                    System.out.println("|-----------------------|");
+	                    System.out.printf("| %-20s%-15s \n", "Employee ID:", id +" |");
+	                    System.out.printf("| %-20s%-15s \n", "Casual Leave Balance:", casualLeaveBalance +"|");
+	                    System.out.printf("| %-20s%-15s \n", "Sick Leave Balance:", sickLeaveBalance +" |");
+	                    System.out.println("|-----------------------|");
+	                    System.out.println();
 	                } else {
 	                    System.out.println("Employee with ID " + id + " not found.");
 	                }
@@ -122,8 +129,11 @@ public class LeaveBalance {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
+                    	
                         int sickLeaveBalance = resultSet.getInt("sick_leave_balance");
+                        
                         return sickLeaveBalance;
+                        
                      } else {
                         System.out.println("Employee with ID " + id + " not found.");
                     }
@@ -143,12 +153,12 @@ public class LeaveBalance {
      */
 	public static int casualLeaveBalance(int id) throws ClassNotFoundException {
 	    try (Connection conn = JdbcConnection.getDBConnection()) {
-	        String sql = "SELECT casual_leave_balance FROM DATABASE.leave_balance WHERE emp_id = ?";
+	        String sql = "SELECT CAUSAL_LEAVE_BALANCE FROM DATABASE.leave_balance WHERE emp_id = ?";
 	        try (PreparedStatement statement = conn.prepareStatement(sql)) {
 	            statement.setInt(1, id);
 	            try (ResultSet resultSet = statement.executeQuery()) {
 	                if (resultSet.next()) {
-	                    int casualLeaveBalance = resultSet.getInt("casual_leave_balance");
+	                    int casualLeaveBalance = resultSet.getInt("CAUSAL_LEAVE_BALANCE");
 	                    return casualLeaveBalance;
 	                } else {
 	                    System.out.println("Employee with ID " + id + " not found.");
@@ -156,7 +166,7 @@ public class LeaveBalance {
 	            }
 	        }
 	    } catch (SQLException e) {
-	        System.out.println("wrong date to apply");
+	        System.out.println("no holidays is remaining ");
 	    }
 	    return 0;
 	}

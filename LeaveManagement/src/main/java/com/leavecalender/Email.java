@@ -1,7 +1,7 @@
 package com.leavecalender;
 
 import java.sql.Date;
-
+import com.enumeration.LeaveStatus.*;
 /**
  * The  Email class represents an email notification for leave requests.
  * It extends the {@link Notification} class and provides methods to send notifications
@@ -10,6 +10,7 @@ import java.sql.Date;
  * @author Roshini Kathirvel(Expleo)
  * @since 15 FEB 2024
  */
+
 
 public class Email extends Notification {
 	/**
@@ -32,15 +33,26 @@ public class Email extends Notification {
      * If the status is Rejected, it notifies the user that the leave request has been rejected.
      * If the status is neither Approved nor Rejected, it informs the user that the leave request is in the submitted state.
      */
-    public void sendNotification() {
-        if ("Approved".equalsIgnoreCase(getStatus())) {
-            String message = "Leave request for " + getEmp_id() + " has been approved.";
-            System.out.println("Notification: " + message);
-        } else if ("Rejected".equalsIgnoreCase(getStatus())) {
-            String message = "Leave request for " + getEmp_id() + " has been Rejected";
-            System.out.println("Notification: " + message);
-        } else {
-            System.out.println("Your Leave Request is in the submitted state");
+    
+        /**
+         * Sends an email notification based on the status of the leave request.
+         * If the status is Approved, it notifies the user that the leave request has been approved.
+         * If the status is Rejected, it notifies the user that the leave request has been rejected.
+         * If the status is neither Approved nor Rejected, it informs the user that the leave request is in the submitted state.
+         */
+        public void sendNotification() {
+            if ("Approved".equalsIgnoreCase(getStatus())) {
+                String message = "Leave request for " + getEmp_id() + " has been approved.";
+                System.out.println("Notification: " + message);
+            } else if ("Rejected".equalsIgnoreCase(getStatus())) {
+                String message = "Leave request for " + getEmp_id() + " has not approved";
+                System.out.println("Notification: " + message);
+            } else {
+                System.out.println("Your Leave Request is in the submitted state");
+            }
         }
+      
+        
     }
-}
+    
+
