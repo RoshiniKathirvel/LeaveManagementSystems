@@ -3,6 +3,7 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 
 import com.exception.LoginException;
+import com.management.SystemManagement;
 import com.userdetails.Account;
 import com.userdetails.Admin;
 import com.userdetails.Employee;
@@ -37,7 +38,8 @@ public class DriverClass {
          System.out.println("|                              2.HR                                       |");
          System.out.println("|                              3.Employee                                 |");
          System.out.println("|                              4.Manager                                  |");
-         System.out.println("|                              5.Exit                                     |");
+         System.out.println("|                              5.Forgot Password                          |");
+         System.out.println("|                              6.Exit                                     |");
          System.out.println("|-------------------------------------------------------------------------|");
          
          int choice = 0;
@@ -113,6 +115,9 @@ public class DriverClass {
                          }
                          break;
                      case 5:
+                    	 SystemManagement.updatePasswords();
+                    	 break;
+                     case 6:
                          exit = false;
                          System.out.println("Thank you for using Expleo Leave Application. Goodbye!");
                          System.exit(0);
@@ -128,18 +133,5 @@ public class DriverClass {
          }
     }
     
-    private static String getRoleName(int choice) {
-        switch (choice) {
-            case 1:
-                return "ADMIN";
-            case 2:
-                return "HR";
-            case 3:
-                return "EMPLOYEE";
-            case 4:
-                return "MANAGER";
-            default:
-                return "";
-        }
-    }
+   
 }

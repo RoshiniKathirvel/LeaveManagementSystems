@@ -7,7 +7,10 @@ package com.exception;
  * @since 14 FEB 2024
  */
 public class LoginException extends Exception {
-    public LoginException(String msg) {
+    
+	private static final long serialVersionUID = 1L;
+
+	public LoginException(String msg) {
         super(msg);
     }
 }
@@ -17,6 +20,9 @@ public class LoginException extends Exception {
  *
  */
 class InputMismatchException extends Exception{
+	
+	private static final long serialVersionUID = 1L;
+
 	public InputMismatchException(String msg) {
 		super(msg);
 	}

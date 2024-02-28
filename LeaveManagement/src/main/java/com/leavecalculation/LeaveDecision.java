@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import com.jdbcconnection.JdbcConnection;
 /**
@@ -16,12 +15,7 @@ import com.jdbcconnection.JdbcConnection;
  * @author Roshini Kathirvel (Expleo)
  * @since 14 FEB 2024
  */
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
+
 
 public class LeaveDecision {
 
@@ -81,9 +75,6 @@ public class LeaveDecision {
             int leaveId = resultSet.getInt("leave_id");
             int employeeId = resultSet.getInt("emp_id");
             String leaveType = resultSet.getString("leave_type");
-            Date startDate = resultSet.getDate("start_date");
-            Date endDate = resultSet.getDate("end_date");
-            String reason = resultSet.getString("reason");
 
             // Process the leave request based on leave type
             if (leaveType.equalsIgnoreCase("casual")) {

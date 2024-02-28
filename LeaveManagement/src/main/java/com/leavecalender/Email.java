@@ -1,7 +1,6 @@
 package com.leavecalender;
 
 import java.sql.Date;
-import com.enumeration.LeaveStatus.*;
 /**
  * The  Email class represents an email notification for leave requests.
  * It extends the {@link Notification} class and provides methods to send notifications

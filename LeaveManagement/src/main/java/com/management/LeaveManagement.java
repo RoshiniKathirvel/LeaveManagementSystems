@@ -1,12 +1,10 @@
 package com.management;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
-import com.leavecalender.Notification;
 
 /**
  * The LeaveManagement class provides methods for managing leave-related operations,
@@ -18,9 +16,10 @@ import com.leavecalender.Notification;
  */
 
 import com.jdbcconnection.JdbcConnection;
-import com.leavecalender.Email;
 
 public class LeaveManagement {
+	
+	static Scanner sc = new Scanner(System.in);
 
     private Connection connection;
     private PreparedStatement preparedStatement;
@@ -37,7 +36,7 @@ public class LeaveManagement {
      * Displays the leave history for a given employee based on employee ID.
      */
     public void manage() {
-        Scanner sc = new Scanner(System.in);
+        
 
         System.out.println("Enter employee ID:");
         int emp_id = sc.nextInt();
@@ -100,7 +99,6 @@ public class LeaveManagement {
      * Views details of a specific leave based on leave ID.
      */
     public void view() {
-        Scanner sc = new Scanner(System.in);
 
         System.out.println("Enter leave ID:");
         int leaveId = sc.nextInt();
