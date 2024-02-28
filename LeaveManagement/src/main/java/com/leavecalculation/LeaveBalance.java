@@ -1,5 +1,4 @@
 package com.leavecalculation;
-import com.leavecalculation.*;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;

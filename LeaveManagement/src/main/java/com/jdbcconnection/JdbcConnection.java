@@ -3,9 +3,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 /**
  * The JdbcConnection class provides a utility for establishing a JDBC connection to an Oracle database.
  * It contains a method to retrieve a database connection using the JDBC driver.

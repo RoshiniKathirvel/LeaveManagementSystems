@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.jdbcconnection.JdbcConnection;
 /**
@@ -16,7 +19,7 @@ import com.jdbcconnection.JdbcConnection;
  * @since 16 FEB 2024
  */
 public class SystemManagement {
-	Scanner sc= new Scanner(System.in);
+	static Scanner sc= new Scanner(System.in);
 	/**
      * Adds employee records to the database, prompting the user for details such as ID,
      * first name, last name, department ID, designation ID, email, username, password, and contact number.
@@ -133,12 +136,311 @@ public class SystemManagement {
 		
 	}
 	/**
+	 * update the employee records such as first name, last name, address, department Id
+	 * 
+	 * @param userName
+	 */
+	public void updateRecords(String userName) {
+		
+		 try {
+	            
+	            System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+				System.out.println("$                    UPDATE EMPLOYEE RECORDS                   $");
+				System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+	            
+	      
+
+	            System.out.println("Enter employee ID:");
+	            int empId = sc.nextInt();
+	            sc.nextLine(); // Consume newline left-over
+
+	            System.out.println("Select the field to update:");
+	            System.out.println("1. First Name");
+	            System.out.println("2. Last Name");
+	            System.out.println("3. Department ID");
+	            System.out.println("4. Designation ID");
+	            System.out.println("5. Email");
+	            System.out.println("6. Contact Number");
+	            System.out.println("7. Address");
+	            System.out.println("8.Exit");
+	            
+	            boolean flag = true;
+	            do {
+	            System.out.print("Enter Your Choice : ");
+	            int choice = sc.nextInt();
+	            sc.nextLine(); // Consume newline left-over
+
+	            
+	            switch (choice) {
+	                case 1:
+	                	updateFirstName(empId);
+	                    break;
+	                case 2:
+	                	updateLastName(empId);
+	                    break;
+	                case 3:
+	                	updateDepartmentId(empId);
+	                    break;
+	                case 4:
+	                	updateDesignationId(empId);
+	                    break;
+	                case 5:
+	                    updateEmail(empId);
+	                    break;
+	                case 6:
+	                    updateContactNumber(empId);
+	                    break;
+	                case 7:
+	                	updateAddress(empId);
+	                	break;
+	                case 8:
+	                	flag=false;
+	                	System.out.println("<---THANK YOU FOR USING THIS APPLICATION--->");
+	                	break;
+	                default:
+	                    System.out.println("Invalid choice !! Please enter a valid one");
+	                    System.out.println();
+	            }
+	            }while(flag);
+	            
+	        } catch (InputMismatchException e) {
+	            System.out.println(e);
+	            
+	        }
+		
+	}
+	
+	/**
+	 * update (or) change the email address of the employee
+	 * 
+	 * @param empId
+	 */
+	public void updateEmail(int empId) {
+	    try {
+	   
+	        System.out.println("Enter new email:");
+	        String newEmail = sc.nextLine();
+
+	        Connection conn = JdbcConnection.getDBConnection();
+
+	        // Query to update the email field
+	        String query = "UPDATE PROJECTDB.employee SET email = ? WHERE emp_id = ?";
+	        PreparedStatement pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, newEmail);
+	        pstmt.setInt(2, empId);
+
+	        int rowsAffected = pstmt.executeUpdate();
+	        System.out.println(rowsAffected + " row(s) updated successfully.");
+
+	        pstmt.close();
+	        conn.close();
+	    } catch (ClassNotFoundException | SQLException e) {
+	        System.out.println(e);
+	    }
+	}
+
+	// Method to validate email format using regular expression
+	public boolean isValidEmail(String email) {
+	    String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+	    Pattern pattern = Pattern.compile(regex);
+	    Matcher matcher = pattern.matcher(email);
+	    return matcher.matches();
+	}
+	
+	// Method to validate contact number
+	public boolean isValidContactNumber(long number) {
+        if (number <= 0) {
+            return false;
+        }
+        int digitCount = String.valueOf(number).length();
+        final int VALID_CONTACT_NUMBER_LENGTH = 10;
+
+        return digitCount == VALID_CONTACT_NUMBER_LENGTH;
+    }
+	
+	/**
+	 * update the contact number of the employee
+	 * 
+	 * @param empId
+	 */
+	public void updateContactNumber(int empId) {
+	    try {
+	       
+	        Connection conn = JdbcConnection.getDBConnection();
+	        
+	        System.out.println("Enter new contact number:");
+	        long newContactNumber = sc.nextLong();
+
+	        // Query to update the contact number field
+	        if(isValidContactNumber(newContactNumber)) {
+	        String query = "UPDATE PROJECTDB.employee SET contact_number = ? WHERE emp_id = ?";
+	        PreparedStatement pstmt = conn.prepareStatement(query);
+	        pstmt.setLong(1, newContactNumber);
+	        pstmt.setInt(2, empId);
+
+	        int rowsAffected = pstmt.executeUpdate();
+	        System.out.println(rowsAffected + " row(s) updated successfully.");
+	        pstmt.close();
+	        conn.close();
+	        }
+
+	        
+	    } catch (ClassNotFoundException | SQLException e) {
+	        System.out.println(e);
+	    } 
+	}
+	
+	/**
+	 * update the first name of the employee
+	 * 
+	 * @param empId
+	 */
+	public void updateFirstName(int empId) {
+        try {
+            
+            System.out.println("Enter new first name:");
+            String newFirstName = sc.nextLine();
+
+            Connection conn = JdbcConnection.getDBConnection();
+
+            // Query to update the first name field
+            String query = "UPDATE PROJECTDB.employee SET fname = ? WHERE emp_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, newFirstName);
+            pstmt.setInt(2, empId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated successfully.");
+
+            pstmt.close();
+            conn.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+        }
+	}
+	
+	/**
+	 * update the LastName of the employee
+	 * 
+	 * @param empId
+	 */
+	public void updateLastName(int empId) {
+        try {
+            
+            System.out.println("Enter new last name:");
+            String newLastName = sc.nextLine();
+
+            Connection conn = JdbcConnection.getDBConnection();
+
+            // Query to update the last name field
+            String query = "UPDATE PROJECTDB.employee SET lname = ? WHERE emp_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, newLastName);
+            pstmt.setInt(2, empId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated successfully.");
+
+            pstmt.close();
+            conn.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+        }
+    }
+	
+	/**
+	 * update the department details
+	 * 
+	 * @param empId
+	 */
+	public void updateDepartmentId(int empId) {
+        try {
+
+            System.out.println("Enter new department ID:");
+            int newDepartmentId = sc.nextInt();
+
+            Connection conn = JdbcConnection.getDBConnection();
+
+            // Query to update the department ID field
+            String query = "UPDATE PROJECTDB.employee SET dept_id = ? WHERE emp_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, newDepartmentId);
+            pstmt.setInt(2, empId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated successfully.");
+
+            pstmt.close();
+            conn.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+        }
+    }
+	
+	/**
+	 * update the designation Id
+	 * 
+	 * @param empId
+	 */
+	public void updateDesignationId(int empId) {
+        try {
+            
+            System.out.println("Enter new designation ID:");
+            int newDesignationId = sc.nextInt();
+
+            Connection conn = JdbcConnection.getDBConnection();
+
+            // Query to update the designation ID field
+            String query = "UPDATE PROJECTDB.employee SET designation_id = ? WHERE emp_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, newDesignationId);
+            pstmt.setInt(2, empId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated successfully.");
+
+            pstmt.close();
+            conn.close();
+        } catch (ClassNotFoundException | SQLException e) {
+             System.out.println(e);
+        }
+    }
+	
+	/**
+	 * update the address of the employee
+	 * 
+	 * @param empId
+	 */
+	public void updateAddress(int empId) {
+        try {
+
+            System.out.println("Enter new address:");
+            String newAddress = sc.nextLine();
+
+            Connection conn = JdbcConnection.getDBConnection();
+
+            // Query to update the address field
+            String query = "UPDATE PROJECTDB.employee SET address = ? WHERE emp_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, newAddress);
+            pstmt.setInt(2, empId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println(rowsAffected + " row(s) updated successfully.");
+
+            pstmt.close();
+            conn.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
+        }
+    }
+	/**
      * Updates an employee's password in the database based on the provided Employee ID.
      * Prompts the user to enter the Employee ID and the new password.
      *
      * @throws ClassNotFoundException If there is an issue with the class loading.
      */
-	public void updateRecords() throws ClassNotFoundException {
+	public static void updatePasswords() throws ClassNotFoundException {
 		System.out.print("Enter the Employee ID : ");
 		int empId = sc.nextInt();
 		sc.nextLine();

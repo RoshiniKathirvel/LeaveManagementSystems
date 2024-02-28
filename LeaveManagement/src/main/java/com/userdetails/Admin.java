@@ -8,6 +8,7 @@ import com.calenderdetails.CentralizedCalendar;
 import com.driverclass.DriverClass;
 import com.exception.LoginException;
 import com.management.SystemManagement;
+
 /**
  * The Admin class represents an admin profile, extending the {@code Person} class.
  * It provides methods to display and perform administrative tasks.
@@ -36,7 +37,7 @@ public class Admin extends Person {
         System.out.println("|---------------------------------------------------------|");
         System.out.println("|    1. Create Record for the employee                    |");
         System.out.println("|    2. View the datas of the employee                    |");
-        System.out.println("|    3. Update the password of the employee               |");
+        System.out.println("|    3. Update the records of the employee                |");
         System.out.println("|    4. Delete Records of the employees                   |");
         System.out.println("|    5. View Leave Calendar                               |");
         System.out.println("|    6. Move To Previous                                  |");
@@ -60,7 +61,7 @@ public class Admin extends Person {
                         acc.viewRecords();
                         break;
                     case 3:
-                        acc.updateRecords();
+                        acc.updateRecords(account.getuserName());;
                         break;
                     case 4:
                         acc.deleteRecords();
